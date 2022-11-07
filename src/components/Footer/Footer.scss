@@ -1,0 +1,17 @@
+.app_developer {
+    display: flex;
+    //justify-content: flex-end;
+    margin-top: 32px;
+
+    @media (max-width: 768px) {
+        justify-content: flex-start;
+    }
+
+    &--item {
+        display: inline;
+
+        &:not(:last-of-type) {
+            margin-right: 12px;
+        }
+    }
+}
