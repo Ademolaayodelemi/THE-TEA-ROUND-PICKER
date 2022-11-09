@@ -6,18 +6,28 @@ import { AddNewMembers } from './AddNewMembers';
 import { MemberList } from './MemberList';
 import { PickerButton } from './PickerButton';
 import { Footer } from './Footer/Footer';
+import swal from '@sweetalert/with-react';
+// const LOCAL_STORAGE_KEY = "names"
+     
+ const LOCAL_STORAGE_KEY = "log"
 
 function App(){
   const [names, setNames] = useState(preStoredNames);
   const [pickedName, setPickedName] = useState("");
+  const [log, setLog] = useState(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) ?? "");
+
+  
+  
 
   // addMember add name to the list
   function addMember(newMemberName){
     if(newMemberName.trim()  !== ""){
       setNames([{ id: uuidv4(), memberName: newMemberName }, ...names]);
-    setPickedName("");
+      
+      // reset PickedName
+      setPickedName("");
     }else{
-      alert("Field can not be empty")
+      alert("Please fill in this field")
     }
   }
 // deleteName removes name from the list
@@ -36,7 +46,17 @@ function App(){
             filteredNames = names.filter(name => name.memberName !== randomName.memberName);
             randomizerAI();
           } else {
+            swal(
+              <div>
+                <h1>{pickedName}</h1>
+                <h3>
+                Will be making the tea for this round!
+                </h3>
+              </div>
+            )
             setPickedName(randomName.memberName);
+            
+            setLog(pickedName)
           }
         } else {
          setPickedName("");
@@ -48,13 +68,26 @@ function App(){
 
   }
 
+// Log/History of all picked Name
+useEffect(
+  ()=>{
+     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(log)) ;
+
+    //  Improvised database for all Picked Names
+     console.log(log)
+  }, [log]);
+
   // useEffect(
   //   ()=>{
   //      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(names)) ;
   //   }, [names]);
-  
-  
 
+    // JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) ??
+    // let allLog = ""
+    // allLog += pickedName 
+    
+    
+    
 // jsx section output to the User Interface (UI)
   return (
     <div>
